@@ -7,9 +7,9 @@ const GenreList = () => {
 
 
   return (
-    <ul>
+    <List>
         {genres.map(genre => <li key={genre.id}>{genre.id}</li>)}
-    </ul>
+    </List>
 )
 }
 
