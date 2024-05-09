@@ -10,7 +10,7 @@ import {
 } from "@aws-sdk/client-dynamodb";
 import bcrypt from "bcryptjs";
 
-interface User {
+export interface User {
     userId: string;
     username: string;
     password: string;
@@ -110,6 +110,7 @@ export function useAuth() {
 
     return {
         user,
+        userName: user?.username || "", // Provide userName from user object
         registerUser,
         authenticateUser,
     };

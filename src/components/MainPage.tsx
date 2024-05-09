@@ -2,12 +2,13 @@ import { Box, Flex, Grid, GridItem, Show } from "@chakra-ui/react";
 import NavBar from "./NavBar";
 import GameGrid from "./GameGrid";
 import GenreList from "./GenreList";
-import React, { useState } from "react";
+import { useState } from "react";
 import { Genre } from "../hooks/useGenres";
 import PlatformSelector from "./PlatformSelector";
 import { Platform } from "../hooks/useGames";
 import SortSelector from "./SortSelector";
 import GameHeading from "./GameHeading";
+import { useAuth } from "../hooks/useAuth";
 
 export interface GameQuery {
     genre: Genre | null;
@@ -18,6 +19,7 @@ export interface GameQuery {
 
 const MainPage = () => {
     const [gameQuery, setGameQuery] = useState<GameQuery>({} as GameQuery);
+    const { user } = useAuth();
     return (
         <Grid
             templateAreas={{
@@ -31,8 +33,7 @@ const MainPage = () => {
         >
             <GridItem area="nav">
                 <NavBar
-                    onSearch={(searchText) => setGameQuery({ ...gameQuery, searchText })}
-                />
+                    onSearch={(searchText) => setGameQuery({ ...gameQuery, searchText })} userName={""}                />
             </GridItem>
             <Show above="lg">
                 <GridItem area="aside" paddingX={5}>
