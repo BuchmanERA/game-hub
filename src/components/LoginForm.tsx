@@ -1,4 +1,3 @@
-// LoginForm.tsx
 import React, { useState } from "react";
 import {
     Button,
@@ -21,15 +20,35 @@ type Props = {
     onClose: () => void;
 };
 
+
 const LoginForm: React.FC<Props> = ({ isOpen, onClose }) => {
-    const { authenticateUser } = useAuth();
+    const { authenticateUser, setUser } = useAuth(); // Add setUser here
     const navigate = useNavigate();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [failureMessage, setFailureMessage] = useState("");
 
     const handleLogin = async () => {
-        await authenticateUser(username, password);
-        navigate("/main");
+        try {
+            const authenticatedUser = await authenticateUser(username, password);
+            if (authenticatedUser) {
+                setUser(authenticatedUser);
+                localStorage.setItem("username", username);
+                navigate("/main");
+            } else {
+                setFailureMessage(
+                    "Authentication failed. Please check your username and password.",
+                );
+            }
+        } catch (error) {
+            if (error instanceof Error) {
+                setFailureMessage("Error authenticating user: " + error.message);
+            } else {
+                setFailureMessage(
+                    "An unknown error occurred while authenticating user.",
+                );
+            }
+        }
     };
 
     return (
@@ -55,6 +74,7 @@ const LoginForm: React.FC<Props> = ({ isOpen, onClose }) => {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </FormControl>
+                    {failureMessage && <p>{failureMessage}</p>}
                 </ModalBody>
 
                 <ModalFooter>

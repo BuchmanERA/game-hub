@@ -27,9 +27,14 @@ const RegisterForm: React.FC<Props> = ({ isOpen, onClose }) => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleRegister = () => {
-        registerUser(username, password);
-        navigate("/main");
+    const handleRegister = async () => {
+        try {
+            await registerUser(username, password);
+            localStorage.setItem("username", username);
+            navigate("/main");
+        } catch (error) {
+            console.error("Registration failed:", error);
+        }
     };
 
     return (

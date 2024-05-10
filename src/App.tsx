@@ -6,7 +6,9 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/main" element={<MainPage />} />
+        <Route path="/main" element={<MainPage favorites={[]} toggleFavorite={function (_gameId: string): void {
+          throw new Error("Function not implemented.");
+        } } />} />
         <Route path="/" element={<LandingPage />} />
       </Routes>
     </Router>

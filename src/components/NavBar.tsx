@@ -1,21 +1,33 @@
-import { HStack, Image, Text } from '@chakra-ui/react';
-import logo from '../assets/logo.webp';
-import ColorModeSwitch from './ColorModeSwitch';
-import SearchInput from './SearchInput';
-import { useAuth } from '../hooks/useAuth';
+import { Button, HStack, Image, Text } from "@chakra-ui/react";
+import logo from "../assets/Logo.png";
+import ColorModeSwitch from "./ColorModeSwitch";
+import SearchInput from "./SearchInput";
+import { useNavigate } from "react-router-dom";
 
- export interface Props {
+interface Props {
   onSearch: (searchText: string) => void;
-  userName: string;
+  username: string;
 }
+const NavBar = ({ onSearch, username }: Props) => {
+  const navigate = useNavigate();
+  const handleLogOut = () => {
+    localStorage.removeItem("username");
+    navigate("/"); // navigate to landing page
+  };
 
-const NavBar = ({ onSearch }: Props) => {
-  const { user } = useAuth();
   return (
-    <HStack padding='10px'>
-      <Image src={logo} boxSize='60px' />
-      {/* Display the welcome message with the user's name */}
-      <Text>Welcome, {user?.username}</Text>
+    <HStack padding="10px">
+      <Image src={logo} width={24}  />
+      <Text>{username && `Welcome, ${username}`}</Text>
+      <Button
+        marginRight={3}
+        colorScheme="blue"
+        variant="outline"
+        onClick={handleLogOut}
+        _hover={{ bg: "blue.500", color: "white" }}
+      >
+        Logout
+      </Button>
       <SearchInput onSearch={onSearch} />
       <ColorModeSwitch />
     </HStack>
