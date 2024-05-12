@@ -1,5 +1,5 @@
 import { Button, HStack, Image, Text } from "@chakra-ui/react";
-import logo from "../assets/Logo.png";
+import Logo from "../assets/Logo.png";
 import ColorModeSwitch from "./ColorModeSwitch";
 import SearchInput from "./SearchInput";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +17,7 @@ const NavBar = ({ onSearch, username }: Props) => {
 
   return (
     <HStack padding="10px">
-      <Image src={logo} width={24}  />
+      <Image src={Logo} width={24} />
       <Text>{username && `Welcome, ${username}`}</Text>
       <Button
         marginRight={3}
