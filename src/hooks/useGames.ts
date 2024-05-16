@@ -1,5 +1,6 @@
-import { GameQuery } from "../components/MainPage";
 import useData from "./useData";
+import { GameQuery } from "../components/MainPage";
+import React from "react";
 
 export interface Platform {
   id: number;
@@ -16,18 +17,31 @@ export interface Game {
   rating_top: number;
 }
 
-const useGames = (gameQuery: GameQuery) =>
-  useData<Game>(
+const useGames = (
+  gameQuery: GameQuery,
+  favorites: string[],
+  showOnlyFavorites: boolean,
+) => {
+  const { data, error, isLoading } = useData<Game>(
     "/games",
     {
       params: {
         genres: gameQuery.genre?.id,
         platforms: gameQuery.platform?.id,
         ordering: gameQuery.sortOrder,
-        search: gameQuery.searchText
+        search: gameQuery.searchText,
       },
     },
-    [gameQuery]
+    [gameQuery, favorites, showOnlyFavorites],
   );
+
+  const filteredData = React.useMemo(() => {
+    return showOnlyFavorites
+      ? data.filter((game) => favorites.includes(game.id.toString()))
+      : data;
+  }, [data, favorites, showOnlyFavorites]);
+
+  return { data: filteredData, error, isLoading };
+};
 
 export default useGames;
